@@ -98,10 +98,16 @@ p {
 <!-- Attendance -->
 <div class="card">
   <h3>📅 Attendance Tracker</h3>
+
   <input type="number" id="attended" placeholder="Classes attended">
   <input type="number" id="total" placeholder="Total classes">
-  <button onclick="calculateAttendance()">Check</button>
+
+  <button onclick="calculateAttendance()">Check Attendance</button>
   <p id="attResult"></p>
+
+  <input type="number" id="target" placeholder="Target % (e.g. 75)">
+  <button onclick="neededClasses()">Classes Needed</button>
+  <p id="needResult"></p>
 </div>
 
 <!-- Password Generator -->
@@ -187,7 +193,7 @@ function calculateCGPA() {
   document.getElementById("cgpaResult").innerText = "CGPA: " + cgpa;
 }
 
-// Attendance
+// Attendance %
 function calculateAttendance() {
   let a = parseFloat(document.getElementById("attended").value);
   let t = parseFloat(document.getElementById("total").value);
@@ -206,7 +212,26 @@ function calculateAttendance() {
   document.getElementById("attResult").innerText = msg;
 }
 
-// Password Generator
+// Classes needed
+function neededClasses() {
+  let a = parseFloat(document.getElementById("attended").value);
+  let t = parseFloat(document.getElementById("total").value);
+  let target = parseFloat(document.getElementById("target").value);
+
+  if (!a || !t || !target) {
+    document.getElementById("needResult").innerText = "Fill all fields!";
+    return;
+  }
+
+  let needed = Math.ceil((target * t - 100 * a) / (100 - target));
+
+  if (needed < 0) needed = 0;
+
+  document.getElementById("needResult").innerText =
+    "You need to attend " + needed + " more classes";
+}
+
+// Password
 function generatePassword() {
   let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!";
   let pass = "";
