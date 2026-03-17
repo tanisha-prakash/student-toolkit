@@ -23,6 +23,6 @@ A simple and useful web application for students that provides academic and util
 
 This project was built to help students easily calculate their academic performance and access useful tools in one place.
 
-## 👩‍💻 Author
+##  Author
 
-Your Name
+Tanisha Prakash
