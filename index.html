@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Toolkit - Free Tools for Students</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+h1 {
+  text-align: center;
+  color: white;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  width: 320px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+input {
+  width: 90%;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background: #4facfe;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  background: #007bff;
+}
+
+p {
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎓 Student Toolkit</h1>
+
+<div class="container">
+
+<!-- SGPA -->
+<div class="card">
+  <h3>📊 SGPA Calculator</h3>
+
+  <input type="number" id="numSubjects" placeholder="Number of subjects">
+  <button onclick="generateSGPAInputs()">Add Subjects</button>
+
+  <div id="sgpaContainer"></div>
+
+  <button onclick="calculateSGPA()">Calculate SGPA</button>
+  <p id="sgpaResult"></p>
+</div>
+
+<!-- CGPA -->
+<div class="card">
+  <h3>🎯 CGPA Calculator</h3>
+
+  <input type="number" id="numSem" placeholder="Number of semesters">
+  <button onclick="generateCGPAInputs()">Add Semesters</button>
+
+  <div id="cgpaContainer"></div>
+
+  <button onclick="calculateCGPA()">Calculate CGPA</button>
+  <p id="cgpaResult"></p>
+</div>
+
+<!-- Attendance -->
+<div class="card">
+  <h3>📅 Attendance Tracker</h3>
+  <input type="number" id="attended" placeholder="Classes attended">
+  <input type="number" id="total" placeholder="Total classes">
+  <button onclick="calculateAttendance()">Check</button>
+  <p id="attResult"></p>
+</div>
+
+<!-- Password Generator -->
+<div class="card">
+  <h3>🔐 Password Generator</h3>
+  <button onclick="generatePassword()">Generate Password</button>
+  <p id="passResult"></p>
+</div>
+
+</div>
+
+<script>
+
+// SGPA Inputs
+function generateSGPAInputs() {
+  let n = document.getElementById("numSubjects").value;
+  let container = document.getElementById("sgpaContainer");
+  container.innerHTML = "";
+
+  for (let i = 1; i <= n; i++) {
+    container.innerHTML += `
+      <input type="number" placeholder="Subject ${i} GPA" class="gpa">
+      <input type="number" placeholder="Subject ${i} Credits" class="credit">
+    `;
+  }
+}
+
+// SGPA Calculation
+function calculateSGPA() {
+  let gpas = document.getElementsByClassName("gpa");
+  let credits = document.getElementsByClassName("credit");
+
+  let totalPoints = 0;
+  let totalCredits = 0;
+
+  for (let i = 0; i < gpas.length; i++) {
+    let g = parseFloat(gpas[i].value);
+    let c = parseFloat(credits[i].value);
+
+    if (isNaN(g) || isNaN(c)) {
+      document.getElementById("sgpaResult").innerText = "Fill all fields!";
+      return;
+    }
+
+    totalPoints += g * c;
+    totalCredits += c;
+  }
+
+  let sgpa = (totalPoints / totalCredits).toFixed(2);
+  document.getElementById("sgpaResult").innerText = "SGPA: " + sgpa;
+}
+
+// CGPA Inputs
+function generateCGPAInputs() {
+  let n = document.getElementById("numSem").value;
+  let container = document.getElementById("cgpaContainer");
+  container.innerHTML = "";
+
+  for (let i = 1; i <= n; i++) {
+    container.innerHTML += `
+      <input type="number" placeholder="Semester ${i} SGPA" class="sem">
+    `;
+  }
+}
+
+// CGPA Calculation
+function calculateCGPA() {
+  let sems = document.getElementsByClassName("sem");
+  let total = 0;
+
+  for (let i = 0; i < sems.length; i++) {
+    let val = parseFloat(sems[i].value);
+
+    if (isNaN(val)) {
+      document.getElementById("cgpaResult").innerText = "Fill all SGPA values!";
+      return;
+    }
+
+    total += val;
+  }
+
+  let cgpa = (total / sems.length).toFixed(2);
+  document.getElementById("cgpaResult").innerText = "CGPA: " + cgpa;
+}
+
+// Attendance
+function calculateAttendance() {
+  let a = parseFloat(document.getElementById("attended").value);
+  let t = parseFloat(document.getElementById("total").value);
+
+  if (!a || !t || t === 0) {
+    document.getElementById("attResult").innerText = "Enter valid values";
+    return;
+  }
+
+  let percent = ((a / t) * 100).toFixed(2);
+
+  let msg = percent >= 75 
+    ? "✅ Good! " + percent + "%"
+    : "⚠️ Low! " + percent + "%";
+
+  document.getElementById("attResult").innerText = msg;
+}
+
+// Password Generator
+function generatePassword() {
+  let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!";
+  let pass = "";
+
+  for (let i = 0; i < 10; i++) {
+    pass += chars[Math.floor(Math.random() * chars.length)];
+  }
+
+  document.getElementById("passResult").innerText = pass;
+}
+
+</script>
+
+</body>
+</html>
